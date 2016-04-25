@@ -1,7 +1,8 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: User
- * Date: 23.04.2016
- * Time: 19:03
- */
+<!-- navigation menu -->
+<nav id="nav">
+    <ul>
+        @foreach(app('menu') as $m)
+        <li><a href="{{ $m->alias }}">{{{ $m->nameru }}}</a></li>
+        @endforeach
+    </ul>
+</nav>

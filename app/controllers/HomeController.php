@@ -20,4 +20,7 @@ class HomeController extends BaseController {
 		return View::make('index');
 	}
 
+	public function contacts() {
+		return View::make('contacts');
+	}
 }

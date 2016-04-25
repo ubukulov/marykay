@@ -24,6 +24,23 @@
     </script>
 </head>
 <body>
-    @yield('content')
+    <div id="wrap">
+        <header id="header">
+            <div class="header">
+                <h1>
+                    MARY KAY
+                </h1>
+            </div>
+            @include('../partial/menu')
+        </header>
+        <div class="content">
+            @yield('content')
+        </div>
+        <footer id="footer">
+            <div class="footer">
+
+            </div>
+        </footer>
+    </div>
 </body>
 </html>

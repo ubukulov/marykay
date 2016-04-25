@@ -13,7 +13,11 @@
 
 App::before(function($request)
 {
-	//
+	App::singleton('menu', function(){
+		$menu = Menu::where(array('publish' => 1))->get();
+		return $menu;
+	});
+	View::share('menu', app('menu'));
 });
 
 

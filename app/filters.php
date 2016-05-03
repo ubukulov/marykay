@@ -17,7 +17,12 @@ App::before(function($request)
 		$menu = Menu::where(array('publish' => 1))->get();
 		return $menu;
 	});
+	App::singleton('menu_for_admin', function(){
+		$menu = Menu::all();
+		return $menu;
+	});
 	View::share('menu', app('menu'));
+	View::share('menu_for_admin', app('menu_for_admin'));
 });
 
 

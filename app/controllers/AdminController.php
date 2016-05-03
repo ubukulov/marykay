@@ -20,9 +20,13 @@ class AdminController extends \BaseController {
 	 *
 	 * @return Response
 	 */
-	public function home()
+	public function index()
 	{
-		return View::make('admin.home');
+		if(Auth::check()){
+			return View::make('admin.home');
+		} else {
+			return Redirect::intended('auth');
+		}
 	}
 
 	/**
@@ -33,7 +37,8 @@ class AdminController extends \BaseController {
 	 */
 	public function create()
 	{
-		return  View::make('admin.create');
+		if(Auth::check()) return Redirect::intended('/admin');
+		return View::make('admin.create');
 	}
 
 	/**
@@ -47,9 +52,9 @@ class AdminController extends \BaseController {
 		$this->loginForm->validate($input = Input::only('email', 'password'));
 
 		if(Auth::attempt($input)){
-			return Redirect::intended('/admin/home');
+			return Redirect::intended('/admin');
 		}
-		return Redirect::back()->withInput()->withFlashMessage('Invalid credentials provided');
+		return Redirect::back()->withInput()->withFlashMessage('Введенные данные не правильно');
 	}
 
 	/**
@@ -71,9 +76,10 @@ class AdminController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit_page($id)
 	{
-		//
+		$page = Menu::find($id);
+		return View::make('admin/pages/edit', compact('page'));
 	}
 
 	/**
@@ -83,9 +89,15 @@ class AdminController extends \BaseController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function update($id)
+	public function update_page($id)
 	{
-		//
+		$page = Menu::findOrFail($id);
+		$validator = Validator::make($data = Input::all(), Menu::$rules);
+		if($validator->fails()){
+			return Redirect::back()->withErrors($validator)->withInput();
+		}
+		$page->update($data);
+		return Redirect::route('admin/pages/index');
 	}
 
 	/**
@@ -98,5 +110,14 @@ class AdminController extends \BaseController {
 	public function destroy($id)
 	{
 		//
+	}
+
+	public function logout() {
+		Auth::logout();
+		return Redirect::home();
+	}
+	
+	public function pages() {
+		return View::make('admin/pages/index');
 	}
 }
